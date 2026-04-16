@@ -6,6 +6,8 @@ import {
     ChevronDown, ChevronUp
 } from 'lucide-react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 interface Prediction {
     condition: string;
     probability: number;
@@ -91,7 +93,7 @@ export const ScanReport = ({ scanData, onNavigate }: ScanReportProps) => {
         if (!scanData) return;
         setIsDownloading(true);
         try {
-            const response = await fetch(`http://localhost:8000/api/report/${scanData.scan_id}/pdf`);
+            const response = await fetch(`${API_URL}/api/report/${scanData.scan_id}/pdf`);
             if (!response.ok) throw new Error('PDF generation failed');
             const blob = await response.blob();
             const url = URL.createObjectURL(blob);

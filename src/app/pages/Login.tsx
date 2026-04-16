@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Lock, ArrowRight, CheckCircle, XCircle, User, Loader2, Eye, EyeOff } from 'lucide-react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 interface LoginProps {
   onNavigate?: (page: string) => void;
   onLogin?: (user: any) => void;
@@ -20,7 +22,7 @@ export const Login = ({ onNavigate, onLogin }: LoginProps) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/login', {
+      const response = await fetch(`${API_URL}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),

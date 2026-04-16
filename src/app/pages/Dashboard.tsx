@@ -8,6 +8,8 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 interface DashboardProps {
   user: any;
   onNavigate: (page: string) => void;
@@ -53,7 +55,7 @@ export const Dashboard = ({ user, onNavigate, onLogout, onScanComplete }: Dashbo
   // Fetch scan history
   const fetchScans = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/scans');
+      const response = await fetch(`${API_URL}/api/scans`);
       if (response.ok) {
         const data = await response.json();
         setScans(data);
@@ -87,7 +89,7 @@ export const Dashboard = ({ user, onNavigate, onLogout, onScanComplete }: Dashbo
       const formData = new FormData();
       formData.append('file', droppedFile);
 
-      const response = await fetch('http://localhost:8000/api/scan', {
+      const response = await fetch(`${API_URL}/api/scan`, {
         method: 'POST',
         body: formData,
       });
@@ -135,7 +137,7 @@ export const Dashboard = ({ user, onNavigate, onLogout, onScanComplete }: Dashbo
     }
     setSelectedScan(scanId);
     try {
-      const response = await fetch(`http://localhost:8000/api/report/${scanId}`);
+      const response = await fetch(`${API_URL}/api/report/${scanId}`);
       if (response.ok) {
         const data = await response.json();
         setSelectedScanDetail(data);
@@ -149,7 +151,7 @@ export const Dashboard = ({ user, onNavigate, onLogout, onScanComplete }: Dashbo
   const downloadPdf = async (scanId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     try {
-      const response = await fetch(`http://localhost:8000/api/report/${scanId}/pdf`);
+      const response = await fetch(`${API_URL}/api/report/${scanId}/pdf`);
       if (!response.ok) throw new Error('PDF generation failed');
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
@@ -170,7 +172,7 @@ export const Dashboard = ({ user, onNavigate, onLogout, onScanComplete }: Dashbo
   const viewFullReport = (scanId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     // Fetch scan data and navigate to report page
-    fetch(`http://localhost:8000/api/report/${scanId}`)
+    fetch(`${API_URL}/api/report/${scanId}`)
       .then(r => r.json())
       .then(data => {
         if (onScanComplete) onScanComplete(data);

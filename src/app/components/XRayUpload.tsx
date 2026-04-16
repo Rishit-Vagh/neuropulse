@@ -4,6 +4,8 @@ import { useDropzone } from 'react-dropzone';
 import { CheckCircle2, Loader2, FileSearch, AlertTriangle, XCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 interface ScanResult {
   scan_id: string;
   filename: string;
@@ -60,7 +62,7 @@ export const XRayUpload = ({ onScanComplete }: XRayUploadProps) => {
       const formData = new FormData();
       formData.append('file', droppedFile);
 
-      const response = await fetch('http://localhost:8000/api/scan', {
+      const response = await fetch(`${API_URL}/api/scan`, {
         method: 'POST',
         body: formData,
       });
